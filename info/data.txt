@@ -1,0 +1,10 @@
+name=Vladimir
+surname=Poplavskij
+birthdate=1985-05-09T03:25:36.000Z
+city=Vilnius
+country=Lithuania
+profession=web-developer
+hobby=weighlifting,book reading, history, travelling
+website=http://poplauki.eu
+projects=http://szawl.eu,http://3d.poplauki.eu,http://arstudiolt.lt
+email=float45@gmail.com
