@@ -1,13 +1,64 @@
 <?php
+class Hobbie {
+	private $title;
+	public function setTitle($str) {
+		$this->title=$str;
+	}
+	public function getTitle() {
+		return $this->title;
+	}
+}
+class Project {
+	private $title;
+	public function setTitle($str) {
+		$this->title=$str;
+	}
+	public function getTitle() {
+		return $this->title;
+	}
+}
+class Language {
+	private $title;
+	public function setTitle($str) {
+		$this->title=$str;
+	}
+	public function getTitle() {
+		return $this->title;
+	}
+}
 class Person {
 	private $name;
 	private $surname;
 	private $birthdate;
+	private $languages;
+	private $projects;
+	private $hobbies;
 	public function showName() {
 		return  $this->name." ".$this->surname."";
 	}
 	public function showBirthdate() {
 		return date('Y-m-d',$this->birthdate);
+	}
+	public function getLanguages() {
+		$mas = array();
+		for ($i=0 ;$i < count($this->languages);$i++) {
+			$mas[]=$this->languages[$i]->getTitle();
+		}
+		return $mas;
+	}
+	public function getProjects() {
+		$mas = array();
+		for ($i=0 ;$i < count($this->projects);$i++) {
+			$mas[]=$this->projects[$i]->getTitle();
+		}
+		return $mas;
+	}
+	public function getHobbies() {
+		$mas = array();
+		for ($i=0 ;$i < count($this->hobbies);$i++) {
+			$mas[]=$this->hobbies[$i]->getTitle();
+		}
+		return $mas;
 	}
 	public function setName($str) {
 		$this->name=$str;
@@ -17,6 +68,36 @@ class Person {
 	}
 	public function setBirthdate($str) {
 		$this->birthdate=strtotime($str);
+	}
+	public function setLanguages($mas) {
+		
+		$this->languages = array();
+		for ($i=0 ;$i < count($mas);$i++) {
+			$language= new Language;
+			$language->setTitle($mas[$i]);
+			$this->languages[]=$language;
+			$language= null;
+		}
+	}
+	public function setProjects($mas) {
+		
+		$this->projects = array();
+		for ($i=0 ;$i < count($mas);$i++) {
+			$project= new Project;
+			$project->setTitle($mas[$i]);
+			$this->projects[]=$project;
+			$project= null;
+		}
+	}
+	public function setHobbies($mas) {
+		
+		$this->hobbies = array();
+		for ($i=0 ;$i < count($mas);$i++) {
+			$hobbie= new Hobbie;
+			$hobbie->setTitle($mas[$i]);
+			$this->hobbies[]=$hobbie;
+			$hobbie= null;
+		}
 	}
 	public function getName() {
 		return $this->name;
@@ -44,7 +125,12 @@ class Resume {
 			Age: ".$this->person->showBirthdate()."\n
 			Email: ".$this->email."\n
 			Country: ".$this->country."\n
-			City: ".$this->city."\n";
+			City: ".$this->city."\n
+			Languages: ".implode(', ',$this->person->getLanguages())."\n
+			Profession: ".$this->profession."\n
+			Website: ".$this->website."\n
+			Projects: ".implode(', ',$this->person->getProjects())."\n
+			Hobbies: ".implode(', ',$this->person->getHobbies())."\n";
 		} else {
 			echo "old infomation ".$this->errors."\n";
 		}
@@ -58,14 +144,15 @@ class Resume {
 			'birthdate'=>$this->person->getBirthdate(),
 			'city'=>$this->city,
 			'country'=>$this->country,
-			'languages'=>$this->languages,
+			'languages'=>$this->person->getLanguages(),
 			'profession'=>$this->profession,
-			'hobbies'=>$this->hobbies,
+			'hobbies'=>$this->person->getHobbies(),
 			'website'=>$this->website,
-			'projects'=>$this->projects,
+			'projects'=>$this->person->getProjects(),
 			'email'=>$this->email
 			);
-		$persons = array($p);
+		$mas= array($p);
+		$persons = array('person'=>$mas);
 		file_put_contents('info/data.json',json_encode($persons));
 	}
 	public function init($string) {
@@ -80,11 +167,11 @@ class Resume {
 				$this->person->setBirthdate($p->birthdate);
 				$this->city = $p->city;
 				$this->country = $p->country;
-				$this->languages = $p->languages;
+				$this->languages = $this->person->setLanguages($p->languages);
 				$this->profession = $p->profession;
-				$this->hobbies = $p->hobbies;
+				$this->hobbies = $this->person->setHobbies($p->hobbies);
 				$this->website = $p->website;
-				$this->projects = $p->projects;
+				$this->projects = $this->person->setProjects($p->projects);
 				$this->email = $p->email;
 			}
 		}
@@ -101,6 +188,7 @@ if (file_exists($filepath)) {
 }
 if (is_object($resume)) {
 	$resume->show();
-	//$resume->exportToJson();
+	
+	$resume->exportToJson();
 }
 ?>
