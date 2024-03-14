@@ -1,4 +1,5 @@
 <!--
+
 &lt;--- Readme.md Snippet without images Start ---&gt;
 ## Tech Stack
 wirtaw/Resume is built on the following main stack:
@@ -18,6 +19,7 @@ wirtaw/Resume is built on the following main stack:
 Full tech stack [here](/techstack.md)
 
 &lt;--- Readme.md Snippet with images End ---&gt;
+
 -->
 <div align="center">
 
